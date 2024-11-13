@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Http\Controllers\SnippetController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,4 +28,8 @@ Route::get('/auth/callback', function () {
     Auth::login($user);
 
     return redirect('/'); // Redirect to the home page after login
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('snippets', SnippetController::class);
 });
