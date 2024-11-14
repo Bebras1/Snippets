@@ -5,14 +5,16 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\SnippetController;
+use App\Http\Controllers\RatingController;
+use App\Http\Controllers\SuggestionController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
-});
+})->name('github.login');
 
 Route::get('/auth/callback', function () {
     $githubUser = Socialite::driver('github')->user();
@@ -27,9 +29,18 @@ Route::get('/auth/callback', function () {
 
     Auth::login($user);
 
-    return redirect('/'); // Redirect to the home page after login
+    return redirect('/');
 });
 
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
+
+Route::resource('snippets', SnippetController::class)->only(['index', 'show']);
+Route::post('/snippets/{snippet}/rate', [RatingController::class, 'store'])->name('ratings.store');
 Route::middleware(['auth'])->group(function () {
-    Route::resource('snippets', SnippetController::class);
+    Route::resource('snippets', SnippetController::class)->except(['index', 'show']);
+    Route::post('/snippets/{snippet}/suggest', [SuggestionController::class, 'store'])->name('suggestions.store');
 });
+

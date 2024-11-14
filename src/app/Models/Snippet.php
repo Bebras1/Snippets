@@ -28,4 +28,9 @@ class Snippet extends Model
     {
         return $this->hasMany(Suggestion::class);
     }
+
+    public function averageRating()
+    {
+        return $this->ratings()->avg('rating');
+    }
 }

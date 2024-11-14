@@ -1,37 +1,9 @@
 @extends('layouts.app')
 
-@if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-@endif
-
 @section('content')
-    <h1>{{ $snippet->title }}</h1>
-    <pre style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">{{ $snippet->code }}</pre>
-    <p><strong>Language:</strong> {{ $snippet->language }}</p>
-    <p>{{ $snippet->description }}</p>
+    <h1>Suggest a Change for {{ $snippet->title }}</h1>
 
-    <h2>Rate this Snippet</h2>
-    <form action="{{ route('ratings.store', $snippet) }}" method="POST">
-        @csrf
-        <label for="rating">Rate this snippet:</label>
-        <select name="rating" id="rating" required>
-            @for ($i = 1; $i <= 5; $i++)
-                <option value="{{ $i }}">{{ $i }}</option>
-            @endfor
-        </select>
-        <button type="submit">Submit Rating</button>
-    </form>
-
-    @if($snippet->averageRating())
-        <p>Average Rating: {{ round($snippet->averageRating(), 2) }}</p>
-    @endif
-
-    <h2>Suggest Changes</h2>
-    <form action="{{ route('suggestions.store', $snippet) }}" method="POST">
+    <form action="{{ route('snippets.suggest', $snippet) }}" method="POST">
         @csrf
         <label for="language">Language:</label>
         <select id="language" name="language" onchange="updateCodeMirrorMode()">
@@ -51,27 +23,9 @@
         <button type="submit">Submit Suggestion</button>
     </form>
 
-    <h2>Suggestions</h2>
-    <ul>
-    @foreach($snippet->suggestions as $suggestion)
-        <li style="margin-bottom: 20px;">
-            <pre style="background-color: #f7f7f7; padding: 10px; border-radius: 5px;">{{ $suggestion->suggested_code }}</pre>
-            <p><strong>Comment:</strong> {{ $suggestion->comment }}</p>
-            <p><strong>Status:</strong> {{ ucfirst($suggestion->status) }}</p>
-
-            @if(Auth::id() === $snippet->user_id || Auth::user()->isAdmin())
-                <form action="{{ route('suggestions.approve', $suggestion) }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-success">Approve</button>
-                </form>
-                <form action="{{ route('suggestions.reject', $suggestion) }}" method="POST" style="display:inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Reject</button>
-                </form>
-            @endif
-        </li>
-    @endforeach
-</ul>
+    @if(session('success'))
+        <p>{{ session('success') }}</p>
+    @endif
 @endsection
 
 @section('scripts')
