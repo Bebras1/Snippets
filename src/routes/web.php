@@ -37,10 +37,12 @@ Route::post('/logout', function () {
     return redirect('/');
 })->name('logout');
 
-Route::resource('snippets', SnippetController::class)->only(['index', 'show']);
-Route::post('/snippets/{snippet}/rate', [RatingController::class, 'store'])->name('ratings.store');
+// Reorder the routes to prevent conflict with "/snippets/{id}"
 Route::middleware(['auth'])->group(function () {
+    Route::get('/snippets/create', [SnippetController::class, 'create'])->name('snippets.create');
     Route::resource('snippets', SnippetController::class)->except(['index', 'show']);
     Route::post('/snippets/{snippet}/suggest', [SuggestionController::class, 'store'])->name('suggestions.store');
 });
 
+Route::resource('snippets', SnippetController::class)->only(['index', 'show']);
+Route::post('/snippets/{snippet}/rate', [RatingController::class, 'store'])->name('ratings.store');
