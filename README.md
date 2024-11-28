@@ -25,7 +25,7 @@ Snippet Manager is a robust and user-friendly web application for managing, edit
 ## Screenshots
 
 ### Snippet List Page
-![image](https://github.com/user-attachments/assets/9bc56b18-fe80-4988-bb87-e8fdbd489b9e)
+![image](https://github.com/user-attachments/assets/af48a732-d2ff-4b49-89bb-97849c2facd6)
 
 ### Create Snippet Page
 ![image](https://github.com/user-attachments/assets/1bbf4c5d-a211-4457-ba7c-95ec0cae1eda)
