@@ -12,6 +12,7 @@ class Suggestion extends Model
         'suggested_code',
         'comment',
         'status',
+        'branch_name',
     ];
 
     public function user()

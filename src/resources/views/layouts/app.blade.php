@@ -1,69 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-gray-900 text-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Code Snippets App')</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-    </style>
+    <title>@yield('title', 'Code Snippets')</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url('/') }}">Code Snippets</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('snippets.index') }}">Browse Snippets</a>
-                </li>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-gray-800 py-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <h1 class="text-xl font-bold"><a href="/">Code Snippets</a></h1>
+            <nav class="flex space-x-4">
                 @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('snippets.create') }}">Add Snippet</a>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link" style="cursor: pointer;">Logout</button>
-                        </form>
-                    </li>
+                    <a href="/snippets/create" class="text-gray-300 hover:text-white">Add Snippet</a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-red-500 hover:text-red-400">Logout</button>
+                    </form>
                 @else
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('github.login') }}">Login with GitHub</a>
-                    </li>
+                    <a href="{{ route('github.login') }}" class="text-gray-300 hover:text-white">Login with GitHub</a>
                 @endauth
-            </ul>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <div class="container mt-4">
-        <!-- Success and Error Messages -->
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <!-- Main Content -->
+    <main class="flex-grow container mx-auto py-8 px-6">
         @yield('content')
-    </div>
+    </main>
 
-    <!-- Bootstrap JS and Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <footer class="bg-gray-800 py-4 text-center text-gray-500">
+        &copy; 2024 Code Snippets. All rights reserved.
+    </footer>
+
+    @yield('scripts')
+    <script>
+        window.__USER__ = @json(auth()->user());
+        window.isAuthenticated = {{ Auth::check() ? 'true' : 'false' }};
+        window.isAdmin = {{ Auth::user() && Auth::user()->is_admin ? 'true' : 'false' }};
+    </script>
 </body>
 </html>
