@@ -3,15 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Snippet;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Snippet;
 
 class SnippetController extends Controller
 {
     public function index()
     {
-        $snippets = Snippet::where('user_id', Auth::id())->get();
-        return view('snippets.index', compact('snippets'));
+        $snippets = Snippet::with('ratings')->get();
+        return view('home', compact('snippets'));
+    }
+
+    public function apiIndex()
+    {
+        $snippets = Snippet::with('ratings')->get()->map(function ($snippet) {
+            return [
+                'id' => $snippet->id,
+                'title' => $snippet->title,
+                'language' => $snippet->language,
+                'code' => $snippet->code,
+                'averageRating' => $snippet->ratings()->avg('rating') ?? 0,
+                'totalRatings' => $snippet->ratings()->count(),
+            ];
+        });
+
+        return response()->json($snippets);
     }
 
     public function create()
@@ -21,58 +37,33 @@ class SnippetController extends Controller
 
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'code' => 'required',
             'language' => 'required|string|max:100',
             'description' => 'nullable|string',
+            'file_path' => 'required|string',
         ]);
 
         Snippet::create([
-            'user_id' => Auth::id(),
+            'user_id' => auth()->id(),
             'title' => $request->title,
             'code' => $request->code,
             'language' => $request->language,
             'description' => $request->description,
+            'file_path' => $request->file_path,
         ]);
 
-        return redirect()->route('snippets.index')->with('success', 'Snippet created successfully.');
-    }
-
-    public function show(Snippet $snippet)
-    {
-        $this->authorize('view', $snippet);
-        return view('snippets.show', compact('snippet'));
-    }
-
-    public function edit(Snippet $snippet)
-    {
-        $this->authorize('update', $snippet);
-        return view('snippets.edit', compact('snippet'));
-    }
-
-    public function update(Request $request, Snippet $snippet)
-    {
-        $this->authorize('update', $snippet);
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'code' => 'required',
-            'language' => 'required|string|max:100',
-            'description' => 'nullable|string',
-        ]);
-
-        $snippet->update($request->only('title', 'code', 'language', 'description'));
-
-        return redirect()->route('snippets.index')->with('success', 'Snippet updated successfully.');
+        return response()->noContent();
     }
 
     public function destroy(Snippet $snippet)
     {
-        $this->authorize('delete', $snippet);
         $snippet->delete();
-
-        return redirect()->route('snippets.index')->with('success', 'Snippet deleted successfully.');
+        return response()->noContent();
     }
-
 }

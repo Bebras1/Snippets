@@ -6,13 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Snippet extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'title',
-        'code',
-        'language',
-        'description',
-    ];
+    protected $fillable = ['user_id', 'title', 'code', 'language', 'description', 'file_path'];
 
     public function user()
     {

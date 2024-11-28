@@ -1,0 +1,178 @@
+.snippet-container {
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    padding: 20px;
+    background: #2a2a38;
+    border-radius: 10px;
+    max-width: 80%;
+}
+
+.instructions {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.instructions h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.instructions p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #d3d3d3;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background: #333;
+    color: #fff;
+}
+
+.search-bar .search-icon {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    color: #d3d3d3;
+}
+
+.file-explorer {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.file-explorer th {
+    background: #1f1f2b;
+    padding: 10px;
+    text-align: left;
+    color: #ffffff;
+}
+
+.file-explorer th .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-explorer th .back-button {
+    font-size: 0.9rem;
+    color: #4caf9e;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.file-explorer th .back-button:hover {
+    color: #73ccd3;
+    font-weight: bold;
+}
+
+.file-explorer td {
+    padding: 10px;
+    color: #ffffff;
+    border-bottom: 1px solid #ca9393;
+}
+
+.file-explorer tr:hover td {
+    background: #3a3a47;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.code-editor-container {
+    margin-top: 20px;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.editor-header span {
+    font-size: 1.2rem;
+}
+
+.exit-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.exit-button:hover {
+    color: #f00;
+}
+
+.code-editor {
+    width: 100%;
+    height: 400px;
+    background: #1e1e2e;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+.create-snippet-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-snippet-btn:hover {
+    background: #0056b3;
+}
+
+.snippet-title-input,
+.snippet-language-input {
+    width: 48%;
+    padding: 10px;
+    margin-right: 2%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #333;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.snippet-title-input:last-child {
+    margin-right: 0;
+}
+
+input[type="text"],
+textarea {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+    color: #888;
+    font-style: italic;
+}

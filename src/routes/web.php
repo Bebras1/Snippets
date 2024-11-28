@@ -8,9 +8,8 @@ use App\Http\Controllers\SnippetController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\SuggestionController;
 
-Route::get('/', function () {
-    return view('home');
-});
+// Public Routes
+Route::get('/', [SnippetController::class, 'index'])->name('home'); // Home route
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
@@ -29,18 +28,32 @@ Route::get('/auth/callback', function () {
 
     Auth::login($user);
 
-    return redirect('/');
+    return redirect()->route('home');
 });
 
+// Logout
 Route::post('/logout', function () {
     Auth::logout();
-    return redirect('/');
+    return redirect()->route('home');
 })->name('logout');
 
-Route::resource('snippets', SnippetController::class)->only(['index', 'show']);
-Route::post('/snippets/{snippet}/rate', [RatingController::class, 'store'])->name('ratings.store');
+// Authenticated Routes
 Route::middleware(['auth'])->group(function () {
-    Route::resource('snippets', SnippetController::class)->except(['index', 'show']);
-    Route::post('/snippets/{snippet}/suggest', [SuggestionController::class, 'store'])->name('suggestions.store');
+    Route::get('/snippets/create', [SnippetController::class, 'create'])->name('snippets.create'); // Blade form
+    Route::post('/snippets', [SnippetController::class, 'store'])->name('snippets.store'); // Handle form submission
+    Route::get('/api/snippets', [SnippetController::class, 'apiIndex'])->name('api.snippets'); // JSON endpoint
+
+    Route::post('/snippets/{snippet}/rate', [RatingController::class, 'rate'])->name('snippets.rate');
+    Route::post('/snippets/{snippet}/suggest', [SuggestionController::class, 'store'])->name('snippets.suggest');
+    Route::delete('/snippets/{snippet}', [SnippetController::class, 'destroy'])->name('snippets.destroy');
 });
+
+Route::middleware(['auth'])->get('/auth/user', function () {
+    return response()->json(Auth::user());
+})->name('auth.user');
+
+
+
+
+
 

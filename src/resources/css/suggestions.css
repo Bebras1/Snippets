@@ -1,0 +1,91 @@
+.suggestions-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #1e1e2e;
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.suggestions-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.suggestion-card {
+    background: #2a2a38;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #4caf9e;
+    border-radius: 8px;
+}
+
+.suggestion-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #4caf9e;
+    font-weight: bold;
+}
+
+.suggestion-card p {
+    color: #cccccc;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.suggestion-card .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.suggestion-card .actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.suggestion-card .actions .approve {
+    background: #4caf9e;
+    color: #fff;
+}
+
+.suggestion-card .actions .approve:hover {
+    background: #3d9b7b;
+}
+
+.suggestion-card .actions .reject {
+    background: #f44336;
+    color: #fff;
+}
+
+.suggestion-card .actions .reject:hover {
+    background: #d73627;
+}
+
+.merge-button {
+    display: block;
+    width: 100%;
+    background: #4caf9e;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 15px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.merge-button:hover {
+    background: #3d9b7b;
+    transform: scale(1.02);
+}
