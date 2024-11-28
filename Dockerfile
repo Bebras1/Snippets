@@ -14,13 +14,13 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www/html
 
 # Copy the application code to the working directory
-COPY src/ .
+COPY src/ /var/www/html/
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install PHP dependencies
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 
 # Expose port for PHP-FPM
 EXPOSE 9000
